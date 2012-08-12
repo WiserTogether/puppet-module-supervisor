@@ -9,8 +9,10 @@ define supervisor::service(
   $stdout_logfile_maxsize='250MB', $stdout_logfile_keep=10,
   $stderr_logfile='',
   $stderr_logfile_maxsize='250MB', $stderr_logfile_keep=10,
-  $environment='', $chdir='', $umask='') {
-  include supervisor::params
+  $environment='', $chdir='', $umask='') 
+{
+    include supervisor
+    include supervisor::params
 
     $autostart = $ensure ? {
       running => true,
@@ -26,7 +28,7 @@ define supervisor::service(
         content => $enable ? {
           true => template('supervisor/service.ini.erb'),
           default => undef },
-        require => File[$supervisor::params::conf_dir, "/var/log/supervisor/${name}"],
+        require => [File[$supervisor::params::conf_dir,"/var/log/supervisor/${name}"]],
         notify => Exec['supervisor::update'];
       "/var/log/supervisor/${name}":
         ensure => $ensure ? {
