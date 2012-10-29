@@ -12,5 +12,11 @@ class supervisor::params {
       $system_service = 'supervisord'
       $package = 'supervisor'
     }
+    default: {
+      $conf_file = '/etc/supervisord.conf'
+      $conf_dir = '/etc/supervisor.d'
+      $system_service = 'supervisord'
+      $package = 'supervisor'
+    }
   }
 }
